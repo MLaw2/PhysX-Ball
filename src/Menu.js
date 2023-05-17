@@ -3,6 +3,5 @@ class Menu extends Phaser.Scene{
         super("Menu");
     }
     create(){
-        // this.camera.setBackground(0xffffff);
     }
 }
