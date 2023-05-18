@@ -1,4 +1,7 @@
 class Menu extends Phaser.Scene{
+
+    ball;
+
     constructor(){
         super("Menu");
     }
@@ -19,14 +22,19 @@ class Menu extends Phaser.Scene{
         .setCollideWorldBounds(true)
         .setBounce(1)
         // .setDrag(100);
-        ball.body.setVelocity(1, 0);
+        ball.body.setVelocity(100, 0);
         // ball.body.drawDebug(new Phaser.GameObjects.Graphics(this));
         // ball.body.x = 500;
-        console.log(ball.body.velocity.y);
+        console.log("yvelocity is = ", ball.body.velocity.y);
+        console.log("xvelocity is = ", ball.body.velocity.x);
         // ball.body.debugShowVelocity = true;
         // ball.body.setAcceleration(100, 0);
         // ball.body.setCollideWorldBounds(true);
         // ball.body.setBounce(1);
         // ball.body.setGravity(0, 10);
+    }
+    update(){
+        // let ball = this.add.circle(100, 100, 20, 0xffffff);
+        // console.log(ball.body);
     }
 }
