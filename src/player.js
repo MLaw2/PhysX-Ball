@@ -1,11 +1,11 @@
 class Player extends Phaser.Physics.Arcade.Sprite{
-    xPos;
-    yPos;
-    xSpeed;
-    ySpeed;
-    xCharge;
-    yCharge;
-    chargeScale;
+    // xPos;
+    // yPos;
+    // xSpeed;
+    // ySpeed;
+    // xCharge;
+    // yCharge;
+    // chargeScale;
 
     constructor(scene, x, y){
         super(scene, x, y);
