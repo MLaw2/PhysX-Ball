@@ -8,7 +8,7 @@ class Player extends Phaser.GameObjects.Arc{
     // chargeScale;
 
     constructor(scene, x, y, radius){
-        super(scene, x, y);
+        super(scene, x, y, radius);
     }
     // calculateMove(){
     //     if(this.input.keyboard.){

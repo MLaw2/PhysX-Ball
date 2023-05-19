@@ -1,7 +1,4 @@
 class Menu extends Phaser.Scene{
-
-    ball;
-
     constructor(){
         super("Menu");
     }
@@ -16,6 +13,8 @@ class Menu extends Phaser.Scene{
         // let image = this.physics.add.image(500, 500, "ball");
 
         // GAMEOBJECT PHYSICS
+        let player = new Player(this, 500, 500, 40);
+        this.add.existing(player);
         let ball = this.add.circle(100, 100, 20, 0xff0000);
         this.physics.add.existing(ball);
         ball.body.setCircle(20)
