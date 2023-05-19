@@ -6,17 +6,8 @@ class Player extends Phaser.GameObjects.Arc{
     // xCharge;
     // yCharge;
     // chargeScale;
-class Player extends Phaser.Physics.Arcade.Sprite{
-    // xPos;
-    // yPos;
-    // xSpeed;
-    // ySpeed;
-    // xCharge;
-    // yCharge;
-    // chargeScale;
-
-    constructor(scene, x, y, radius){
-        super(scene, x, y, radius);
+    constructor(scene, x, y, r, color, alpha){
+        super(scene, x, y, r, 0, 180, false, color, alpha);
     }
     // calculateMove(){
     //     if(this.input.keyboard.){
