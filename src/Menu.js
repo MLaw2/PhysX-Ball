@@ -3,28 +3,46 @@ class Menu extends Phaser.Scene{
         super("Menu");
     }
     preload(){
-        // this.load.image("ball", "../assets/ball.jpg");
     }
     create(){
-        // let test = this.physics.add.existing(new Player(this, 400, 400));
+        // storing player input into object movement
+        let xbuffer = 0;
+        let ybuffer = 0;
 
-        // IMAGE PHYSICS
-        // this.add.image(300, 300, "ball");
-        // let image = this.physics.add.image(500, 500, "ball");
-
-        // GAMEOBJECT PHYSICS
-        // let player = new Player(this, 250, 250, 100, 0xff0000, 1);
-        let thing = new Phaser.GameObject.BuildGameObject(this, 100, 100, 40, 0, 360, false, 0xff0000, 1);
-        // this.add.existing(player);
-        // this.add.existing(player);
-
+        // player ball
         let ball = this.add.circle(100, 100, 20, 0xff0000);
         this.physics.add.existing(ball);
         ball.body.setCircle(20)
         .setCollideWorldBounds(true)
         .setBounce(1)
-        // .setDrag(100);
-        ball.body.setVelocity(100, 0);
+        .setDrag(1000);
+        // ball.body.setVelocity(100, 0);
+
+        // key right movement
+        this.input.keyboard.on("keydown-RIGHT", event=>{
+            console.log("Rdown");
+            // if(!this.input.keyboard.LEFT.isDown){
+                xbuffer += 100;
+            // }
+        });
+        this.input.keyboard.on("keyup-RIGHT", event=>{
+            console.log("Rup, xbuffer = ", xbuffer);
+            ball.body.setVelocity(ball.body.velocity.x + xbuffer, ball.body.velocity.y);
+            xbuffer = 0;
+        });
+
+        // key left movement
+        this.input.keyboard.on("keydown-LEFT", event=>{
+            console.log("Ldown");
+            // if(!this.input.keyboard.RIGHT.isDown){
+                xbuffer-= 100;
+            // }
+        });
+        this.input.keyboard.on("keyup-LEFT", event=>{
+            console.log("Lup, xbuffer = ", xbuffer);
+            ball.body.setVelocity(ball.body.velocity.x + xbuffer, ball.body.velocity.y);
+            xbuffer = 0;
+        });
         // ball.body.drawDebug(new Phaser.GameObjects.Graphics(this));
         // ball.body.x = 500;
         console.log("yvelocity is = ", ball.body.velocity.y);
