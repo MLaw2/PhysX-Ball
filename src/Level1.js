@@ -6,8 +6,8 @@ class Level1 extends Phaser.Scene{
     }
     create(){
         // storing player input into object movement
-        let xbuffer = 0;
-        let ybuffer = 0;
+        let xDelta = 0;
+        let yDelta = 0;
 
         // conditionals for checking if a key is already pressed.
         // I know there are probably better ways but im prototyping fast here so whatever
@@ -15,6 +15,11 @@ class Level1 extends Phaser.Scene{
         let isLeft = false;
         let isUp = false;
         let isDown = false;
+
+        // adjustable parameters for movement
+        let moveDelta = 10;
+        let maxDelta = 500;
+        let minDelta = 100;
 
         // player ball
         let ball = this.add.circle(100, 100, 20, 0xff0000);
@@ -24,81 +29,85 @@ class Level1 extends Phaser.Scene{
         .setBounce(1)
         .setDamping(true)
         .setDrag(0.5);
-        ball.body.setVelocity(30, 20);
+        // ball.body.setVelocity(5000, 0);
 
         // key right movement
         this.input.keyboard.on("keydown-RIGHT", event=>{
             isRight = true;
             if(isLeft){
-                console.log("Left triggered while Right already held, cancelling buffer movement.");
-                xbuffer = 0;
+                console.log("Left triggered while Right already held, cancelling movement.");
+                xDelta = 0;
             }
-            else{
-                console.log("Rdown");
-                xbuffer += 100;
+            else if(xDelta < maxDelta){
+                console.log("Charge Right");
+                xDelta += moveDelta;
             }
         });
         this.input.keyboard.on("keyup-RIGHT", event=>{
             isRight = false;
-            console.log("Rup, xbuffer = ", xbuffer);
-            ball.body.setVelocity(ball.body.velocity.x + xbuffer, ball.body.velocity.y);
-            xbuffer = 0;
+            xDelta += minDelta;
+            console.log("Release Right, xDelta = ", xDelta);
+            ball.body.setVelocity(ball.body.velocity.x + xDelta, ball.body.velocity.y);
+            xDelta = 0;
         });
 
         // key left movement
         this.input.keyboard.on("keydown-LEFT", event=>{
             isLeft = true;
             if(isRight){
-                console.log("Right triggered while Left already held, cancelling buffer movement.");
-                xbuffer = 0;
+                console.log("Right triggered while Left already held, cancelling movement.");
+                xDelta = 0;
             }
-            else{
-                console.log("Ldown");
-                xbuffer-= 100;
+            else if(xDelta > -maxDelta){
+                console.log("Charge Left");
+                xDelta-= moveDelta;
             }
         });
         this.input.keyboard.on("keyup-LEFT", event=>{
             isLeft = false;
-            console.log("Lup, xbuffer = ", xbuffer);
-            ball.body.setVelocity(ball.body.velocity.x + xbuffer, ball.body.velocity.y);
-            xbuffer = 0;
+            xDelta -= minDelta;
+            console.log("Release Left, xDelta = ", xDelta);
+            ball.body.setVelocity(ball.body.velocity.x + xDelta, ball.body.velocity.y);
+            xDelta = 0;
         });
 
         // key up movement
         this.input.keyboard.on("keydown-UP", event=>{
             isUp = true;
             if(isDown){
-                console.log("Down triggered while Up already held, cancelling buffer movement.");
-                ybuffer = 0;
+                console.log("Down triggered while Up already held, cancelling movement.");
+                yDelta = 0;
             }
-            else{
-                console.log("Udown");
-                ybuffer-=100;
+            else if(yDelta > -maxDelta){
+                console.log("Charge Up");
+                yDelta-=moveDelta;
             }
         });
         this.input.keyboard.on("keyup-UP", event=>{
             isUp = false;
-            console.log("Uup, ybuffer = ", ybuffer);
-            ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+ybuffer);
-            ybuffer=0;
+            yDelta -= minDelta;
+            console.log("Release Up, yDelta = ", yDelta);
+            ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+yDelta);
+            yDelta=0;
         });
         // key down movement
         this.input.keyboard.on("keydown-DOWN", event=>{
             isDown = true;
             if(isUp){
                 console.log("Up triggered while Down already held, cancelling buffer movement.");
-                ybuffer = 0;
+                yDelta = 0;
             }
-            else{
-                console.log("Ddown");
-                ybuffer+=100;
+            else if(yDelta < maxDelta){
+                console.log("Charge Down");
+                yDelta+=moveDelta;
             }
         });
         this.input.keyboard.on("keyup-DOWN", event=>{
             isDown = false;
-            console.log("Dup, ybuffer = ", ybuffer);
-            ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+ybuffer);
-            ybuffer=0;
+            yDelta += minDelta;
+            console.log("Release Down, yDelta = ", yDelta);
+            ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+yDelta);
+            yDelta=0;
         });
 
         // ball.body.drawDebug(new Phaser.GameObjects.Graphics(this));
