@@ -11,7 +11,7 @@ let config = {
         gravity: 0,
         arcade: {debug: true},
     },
-    backgroundColor: 0xA000B6,
+    backgroundColor: 0xA0B0B6,
     // scene: [Menu, Select, Level1, Level2, Level3, Level4, Level5, Summary]
     scene: Menu,
     title: "PhysX Ball",
