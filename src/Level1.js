@@ -17,9 +17,9 @@ class Level1 extends Phaser.Scene{
         let isDown = false;
 
         // adjustable parameters for movement
-        let moveDelta = 10;
-        let maxDelta = 500;
-        let minDelta = 100;
+        let moveDelta = 50;
+        let maxDelta = 1000;
+        let minDelta = 0;
 
         // player ball
         let ball = this.add.circle(100, 100, 20, 0xff0000);
@@ -90,6 +90,7 @@ class Level1 extends Phaser.Scene{
             ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+yDelta);
             yDelta=0;
         });
+
         // key down movement
         this.input.keyboard.on("keydown-DOWN", event=>{
             isDown = true;
@@ -110,18 +111,7 @@ class Level1 extends Phaser.Scene{
             yDelta=0;
         });
 
-        // ball.body.drawDebug(new Phaser.GameObjects.Graphics(this));
-        // ball.body.x = 500;
-        console.log("yvelocity is = ", ball.body.velocity.y);
-        console.log("xvelocity is = ", ball.body.velocity.x);
-        // ball.body.debugShowVelocity = true;
-        // ball.body.setAcceleration(100, 0);
-        // ball.body.setCollideWorldBounds(true);
-        // ball.body.setBounce(1);
-        // ball.body.setGravity(0, 10);
     }
     update(){
-        // let ball = this.add.circle(100, 100, 20, 0xffffff);
-        // console.log(ball.body);
     }
 }
