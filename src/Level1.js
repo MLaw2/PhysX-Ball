@@ -27,7 +27,7 @@ class Level1 extends Phaser.Scene{
         ball.body.setCircle(20)
         .setCollideWorldBounds(true)
         .setBounce(1)
-        .setDamping(true)
+        .setDamping(true) // required for smooth ball movement
         .setDrag(0.5);
         // ball.body.setVelocity(5000, 0);
 
