@@ -138,13 +138,31 @@ class Level1 extends Phaser.Scene{
         wall3.body.setImmovable();
         this.physics.add.collider(this.player.ball, [wall1, wall2, wall3]);
 
+        // adding overlap check with ball and goal
         this.physics.add.overlap(this.player.ball, this.goal);
+        // this.physics.add.collider(this.player.ball, this.goal);
+        
+
+        let spacebarDown = 0;
+        let spacebarUp = 0;
+        this.input.keyboard.on("keydown-SPACE", event=>{
+            spacebarDown += 1;
+        });
+        this.input.keyboard.on("keyup-SPACE", event=>{
+            spacebarUp += 1;
+        });
+
         // getting errors trying to put this into the listeners directly, so i'll just pass it into a variable
-        // let temp2 = this.goal;
-        // let temp1 = this.player.ball;
-        // this.physics.world.on("overlap",(temp1, temp2)=>{
-        //     console.log("pee");
-        // });
+        let temp2 = this.goal;
+        let temp1 = this.player.ball;
+
+        this.physics.world.on("collide", (temp1, temp2)=>{
+            console.log("help");
+        })
+        this.physics.world.on("overlap",(temp1, temp2)=>{
+            console.log("fard");
+        });
+
 
     }
     update(){
