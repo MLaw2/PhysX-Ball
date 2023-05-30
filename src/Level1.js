@@ -1,114 +1,146 @@
 class Level1 extends Phaser.Scene{
+
+    player;
+    goal;
+
     constructor(){
         super("Level1");
     }
     preload(){
+        this.load.image("ball", "./assets/ball.jpg");
     }
     create(){
-        // storing player input into object movement
-        let xDelta = 0;
-        let yDelta = 0;
-
-        // conditionals for checking if a key is already pressed.
-        // I know there are probably better ways but im prototyping fast here so whatever
-        let isRight = false;
-        let isLeft = false;
-        let isUp = false;
-        let isDown = false;
-
-        // adjustable parameters for movement
-        let moveDelta = 50;
-        let maxDelta = 1000;
-        let minDelta = 0;
-
-        // player ball
-        let ball = this.add.circle(100, 100, 20, 0xff0000);
-        this.physics.add.existing(ball);
-        ball.body.setCircle(20)
+        // setting up player
+        this.player = {
+            movement: {
+                xDelta: 0,
+                yDelta: 0,
+                moveDelta: 50,
+                maxDelta: 1000,
+                minDelta: 0,
+            },
+            input: {
+                isRight: false,
+                isLeft: false,
+                isUp: false,
+                isDown: false,
+            },
+            ball: this.add.circle(0, 0, 20, 0xff0000).setOrigin(0.5),
+        }
+        this.physics.add.existing(this.player.ball)
+        this.player.ball.body.setCircle(20)
         .setCollideWorldBounds(true)
         .setBounce(1)
-        .setDamping(true) // required for smooth ball movement
+        .setDamping(true)
         .setDrag(0.5);
+
+        // // storing player input into object movement
+        // let xDelta = 0;
+        // let yDelta = 0;
+
+        // // conditionals for checking if a key is already pressed.
+        // // I know there are probably better ways but im prototyping fast here so whatever
+        // let isRight = false;
+        // let isLeft = false;
+        // let isUp = false;
+        // let isDown = false;
+
+        // // adjustable parameters for movement
+        // let moveDelta = 50;
+        // let maxDelta = 1000;
+        // let minDelta = 0;
+
+        // // testing Goal class
+        // // let thing = new Goal(Level1, 600, 600, "ball");
+
+        // // player ball
+        // let ball = this.add.circle(100, 100, 20, 0xff0000);
+        // this.physics.add.existing(ball);
+        // ball.body.setCircle(20)
+        // .setCollideWorldBounds(true)
+        // .setBounce(1)
+        // .setDamping(true) // required for smooth ball movement
+        // .setDrag(0.5);
         // ball.body.setVelocity(5000, 0);
 
         // key right movement
         this.input.keyboard.on("keydown-RIGHT", event=>{
-            isRight = true;
-            if(isLeft){
+            this.player.input.isRight = true;
+            if(this.player.input.isLeft){
                 console.log("Left triggered while Right already held, cancelling movement.");
-                xDelta = 0;
+                this.player.movement.xDelta = 0;
             }
-            else if(xDelta < maxDelta){
+            else if(this.player.movement.xDelta < this.player.movement.maxDelta){
                 console.log("Charge Right");
-                xDelta += moveDelta;
+                this.player.movement.xDelta += this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-RIGHT", event=>{
-            isRight = false;
-            xDelta += minDelta;
-            console.log("Release Right, xDelta = ", xDelta);
-            ball.body.setVelocity(ball.body.velocity.x + xDelta, ball.body.velocity.y);
-            xDelta = 0;
+            this.player.input.isRight = false;
+            this.player.movement.xDelta += this.player.movement.minDelta;
+            console.log("Release Right, xDelta = ", this.player.movement.xDelta);
+            this.player.ball.body.setVelocity(this.player.ball.body.velocity.x + this.player.movement.xDelta, this.player.ball.body.velocity.y);
+            this.player.movement.xDelta = 0;
         });
 
         // key left movement
         this.input.keyboard.on("keydown-LEFT", event=>{
-            isLeft = true;
-            if(isRight){
+            this.player.input.isLeft = true;
+            if(this.player.input.isRight){
                 console.log("Right triggered while Left already held, cancelling movement.");
-                xDelta = 0;
+                this.player.movement.xDelta = 0;
             }
-            else if(xDelta > -maxDelta){
+            else if(this.player.movement.xDelta > -this.player.movement.maxDelta){
                 console.log("Charge Left");
-                xDelta-= moveDelta;
+                this.player.movement.xDelta-= this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-LEFT", event=>{
-            isLeft = false;
-            xDelta -= minDelta;
-            console.log("Release Left, xDelta = ", xDelta);
-            ball.body.setVelocity(ball.body.velocity.x + xDelta, ball.body.velocity.y);
-            xDelta = 0;
+            this.player.input.isLeft = false;
+            this.player.movement.xDelta -= this.player.movement.minDelta;
+            console.log("Release Left, xDelta = ", this.player.movement.xDelta);
+            this.player.ball.body.setVelocity(this.player.ball.body.velocity.x + this.player.movement.xDelta, this.player.ball.body.velocity.y);
+            this.player.movement.xDelta = 0;
         });
 
         // key up movement
         this.input.keyboard.on("keydown-UP", event=>{
-            isUp = true;
-            if(isDown){
+            this.player.input.isUp = true;
+            if(this.player.input.isDown){
                 console.log("Down triggered while Up already held, cancelling movement.");
-                yDelta = 0;
+                this.player.movement.yDelta = 0;
             }
-            else if(yDelta > -maxDelta){
+            else if(this.player.movement.yDelta > -this.player.movement.maxDelta){
                 console.log("Charge Up");
-                yDelta-=moveDelta;
+                this.player.movement.yDelta-=this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-UP", event=>{
-            isUp = false;
-            yDelta -= minDelta;
-            console.log("Release Up, yDelta = ", yDelta);
-            ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+yDelta);
-            yDelta=0;
+            this.player.input.isUp = false;
+            this.player.movement.yDelta -= this.player.movement.minDelta;
+            console.log("Release Up, yDelta = ", this.player.movement.yDelta);
+            this.player.ball.body.setVelocity(this.player.ball.body.velocity.x, this.player.ball.body.velocity.y+this.player.movement.yDelta);
+            this.player.movement.yDelta=0;
         });
 
         // key down movement
         this.input.keyboard.on("keydown-DOWN", event=>{
-            isDown = true;
-            if(isUp){
+            this.player.input.isDown = true;
+            if(this.player.input.isUp){
                 console.log("Up triggered while Down already held, cancelling buffer movement.");
-                yDelta = 0;
+                this.player.movement.yDelta = 0;
             }
-            else if(yDelta < maxDelta){
+            else if(this.player.movement.yDelta < this.player.movement.maxDelta){
                 console.log("Charge Down");
-                yDelta+=moveDelta;
+                this.player.movement.yDelta+=this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-DOWN", event=>{
-            isDown = false;
-            yDelta += minDelta;
-            console.log("Release Down, yDelta = ", yDelta);
-            ball.body.setVelocity(ball.body.velocity.x, ball.body.velocity.y+yDelta);
-            yDelta=0;
+            this.player.input.isDown = false;
+            this.player.movement.yDelta += this.player.movement.minDelta;
+            console.log("Release Down, yDelta = ", this.player.movement.yDelta);
+            this.player.ball.body.setVelocity(this.player.ball.body.velocity.x, this.player.ball.body.velocity.y+this.player.movement.yDelta);
+            this.player.movement.yDelta=0;
         });
 
         // level geometry (FOR TESTING STUFF)
@@ -124,15 +156,16 @@ class Level1 extends Phaser.Scene{
         wall2.body.setImmovable();
         // test level
         // wall.create(50, 50);
-        this.physics.add.collider(ball, [wall1, wall2]);
+        this.physics.add.collider(this.player.ball, [wall1, wall2]);
 
         const goal = this.add.circle(250, 250, 10, 0x39FF14)
         .setOrigin(0.5, 0.5);
         this.physics.add.existing(goal);
         goal.body.setCircle(10);
         goal.body.onOverlap = true;
-        this.physics.add.overlap(ball, goal);
-        this.physics.world.on("overlap",(ball, goal)=>{
+        this.physics.add.overlap(this.player.ball, goal);
+        let temp = this.player.ball;
+        this.physics.world.on("overlap",(temp, goal)=>{
             console.log("pee");
         });
     }
