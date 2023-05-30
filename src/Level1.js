@@ -10,58 +10,41 @@ class Level1 extends Phaser.Scene{
         this.load.image("ball", "./assets/ball.jpg");
     }
     create(){
+        // setting up goal
+        this.goal = this.add.circle(250, 250, 10, 0x39FF14)
+        .setOrigin(0.5, 0.5);
+        this.physics.add.existing(this.goal);
+        this.goal.body.setCircle(10);
+        this.goal.body.onOverlap = true;
         // setting up player
         this.player = {
             movement: {
+                // storing player input into object movement
                 xDelta: 0,
                 yDelta: 0,
+                // adjustable parameters for movement
                 moveDelta: 50,
                 maxDelta: 1000,
                 minDelta: 0,
             },
             input: {
+                // conditionals for checking if a key is already pressed.
                 isRight: false,
                 isLeft: false,
                 isUp: false,
                 isDown: false,
             },
+            // player ball object
             ball: this.add.circle(0, 0, 20, 0xff0000).setOrigin(0.5),
         }
+
+        // adding physics to player ball
         this.physics.add.existing(this.player.ball)
         this.player.ball.body.setCircle(20)
         .setCollideWorldBounds(true)
         .setBounce(1)
         .setDamping(true)
         .setDrag(0.5);
-
-        // // storing player input into object movement
-        // let xDelta = 0;
-        // let yDelta = 0;
-
-        // // conditionals for checking if a key is already pressed.
-        // // I know there are probably better ways but im prototyping fast here so whatever
-        // let isRight = false;
-        // let isLeft = false;
-        // let isUp = false;
-        // let isDown = false;
-
-        // // adjustable parameters for movement
-        // let moveDelta = 50;
-        // let maxDelta = 1000;
-        // let minDelta = 0;
-
-        // // testing Goal class
-        // // let thing = new Goal(Level1, 600, 600, "ball");
-
-        // // player ball
-        // let ball = this.add.circle(100, 100, 20, 0xff0000);
-        // this.physics.add.existing(ball);
-        // ball.body.setCircle(20)
-        // .setCollideWorldBounds(true)
-        // .setBounce(1)
-        // .setDamping(true) // required for smooth ball movement
-        // .setDrag(0.5);
-        // ball.body.setVelocity(5000, 0);
 
         // key right movement
         this.input.keyboard.on("keydown-RIGHT", event=>{
@@ -143,32 +126,24 @@ class Level1 extends Phaser.Scene{
             this.player.movement.yDelta=0;
         });
 
-        // level geometry (FOR TESTING STUFF)
-        // let wall = this.physics.add.staticGroup({
-            
-        // });
-        
+        // test level
         let wall1 = this.add.rectangle(500, 500, 100, 100, 0xffffff);
         let wall2 = this.add.rectangle(100, 399, 20, 100, 0xffffff);
         this.physics.add.existing(wall1);
         this.physics.add.existing(wall2);
         wall1.body.setImmovable();
         wall2.body.setImmovable();
-        // test level
-        // wall.create(50, 50);
         this.physics.add.collider(this.player.ball, [wall1, wall2]);
 
-        const goal = this.add.circle(250, 250, 10, 0x39FF14)
-        .setOrigin(0.5, 0.5);
-        this.physics.add.existing(goal);
-        goal.body.setCircle(10);
-        goal.body.onOverlap = true;
-        this.physics.add.overlap(this.player.ball, goal);
-        let temp = this.player.ball;
-        this.physics.world.on("overlap",(temp, goal)=>{
-            console.log("pee");
-        });
+        this.physics.add.overlap(this.player.ball, this.goal);
+
     }
     update(){
+        // getting errors trying to put this into the listeners directly, so i'll just pass it into a variable
+        // let temp2 = this.goal;
+        // let temp1 = this.player.ball;
+        // this.physics.world.on("overlap",(temp1, temp2)=>{
+        //     console.log("pee");
+        // });
     }
 }
