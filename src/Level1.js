@@ -111,6 +111,30 @@ class Level1 extends Phaser.Scene{
             yDelta=0;
         });
 
+        // level geometry (FOR TESTING STUFF)
+        // let wall = this.physics.add.staticGroup({
+            
+        // });
+        
+        let wall1 = this.add.rectangle(500, 500, 100, 100, 0xffffff);
+        let wall2 = this.add.rectangle(100, 399, 20, 100, 0xffffff);
+        this.physics.add.existing(wall1);
+        this.physics.add.existing(wall2);
+        wall1.body.setImmovable();
+        wall2.body.setImmovable();
+        // test level
+        // wall.create(50, 50);
+        this.physics.add.collider(ball, [wall1, wall2]);
+
+        const goal = this.add.circle(250, 250, 10, 0x39FF14)
+        .setOrigin(0.5, 0.5);
+        this.physics.add.existing(goal);
+        goal.body.setCircle(10);
+        goal.body.onOverlap = true;
+        this.physics.add.overlap(ball, goal);
+        this.physics.world.on("overlap",(ball, goal)=>{
+            console.log("pee");
+        });
     }
     update(){
     }
