@@ -129,21 +129,24 @@ class Level1 extends Phaser.Scene{
         // test level
         let wall1 = this.add.rectangle(500, 500, 100, 100, 0xffffff);
         let wall2 = this.add.rectangle(100, 399, 20, 100, 0xffffff);
+        let wall3 = this.add.rectangle(300, 300, 20, 20, 0xffffff);
         this.physics.add.existing(wall1);
         this.physics.add.existing(wall2);
+        this.physics.add.existing(wall3);
         wall1.body.setImmovable();
         wall2.body.setImmovable();
-        this.physics.add.collider(this.player.ball, [wall1, wall2]);
+        wall3.body.setImmovable();
+        this.physics.add.collider(this.player.ball, [wall1, wall2, wall3]);
 
         this.physics.add.overlap(this.player.ball, this.goal);
-
-    }
-    update(){
         // getting errors trying to put this into the listeners directly, so i'll just pass it into a variable
         // let temp2 = this.goal;
         // let temp1 = this.player.ball;
         // this.physics.world.on("overlap",(temp1, temp2)=>{
         //     console.log("pee");
         // });
+
+    }
+    update(){
     }
 }
