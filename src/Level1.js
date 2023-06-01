@@ -1,21 +1,28 @@
+var what = false;
 class Level1 extends Phaser.Scene{
 
     player;
     goal;
+    thing = new Player();
 
     constructor(){
         super("Level1");
+    }
+    testFunc(){
+        console.log("transition to new scene");
     }
     preload(){
         this.load.image("ball", "./assets/ball.jpg");
     }
     create(){
+
         // setting up goal
         this.goal = this.add.circle(250, 250, 10, 0x39FF14)
         .setOrigin(0.5, 0.5);
         this.physics.add.existing(this.goal);
         this.goal.body.setCircle(10);
         this.goal.body.onOverlap = true;
+
         // setting up player
         this.player = {
             movement: {
@@ -36,7 +43,11 @@ class Level1 extends Phaser.Scene{
             },
             // player ball object
             ball: this.add.circle(0, 0, 20, 0xff0000).setOrigin(0.5),
+            inGoal: false,
         }
+
+        // print out player data
+        // console.log(this.player);
 
         // adding physics to player ball
         this.physics.add.existing(this.player.ball)
@@ -50,18 +61,18 @@ class Level1 extends Phaser.Scene{
         this.input.keyboard.on("keydown-RIGHT", event=>{
             this.player.input.isRight = true;
             if(this.player.input.isLeft){
-                console.log("Left triggered while Right already held, cancelling movement.");
+                // console.log("Left triggered while Right already held, cancelling movement.");
                 this.player.movement.xDelta = 0;
             }
             else if(this.player.movement.xDelta < this.player.movement.maxDelta){
-                console.log("Charge Right");
+                // console.log("Charge Right");
                 this.player.movement.xDelta += this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-RIGHT", event=>{
             this.player.input.isRight = false;
             this.player.movement.xDelta += this.player.movement.minDelta;
-            console.log("Release Right, xDelta = ", this.player.movement.xDelta);
+            // console.log("Release Right, xDelta = ", this.player.movement.xDelta);
             this.player.ball.body.setVelocity(this.player.ball.body.velocity.x + this.player.movement.xDelta, this.player.ball.body.velocity.y);
             this.player.movement.xDelta = 0;
         });
@@ -70,18 +81,18 @@ class Level1 extends Phaser.Scene{
         this.input.keyboard.on("keydown-LEFT", event=>{
             this.player.input.isLeft = true;
             if(this.player.input.isRight){
-                console.log("Right triggered while Left already held, cancelling movement.");
+                // console.log("Right triggered while Left already held, cancelling movement.");
                 this.player.movement.xDelta = 0;
             }
             else if(this.player.movement.xDelta > -this.player.movement.maxDelta){
-                console.log("Charge Left");
+                // console.log("Charge Left");
                 this.player.movement.xDelta-= this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-LEFT", event=>{
             this.player.input.isLeft = false;
             this.player.movement.xDelta -= this.player.movement.minDelta;
-            console.log("Release Left, xDelta = ", this.player.movement.xDelta);
+            // console.log("Release Left, xDelta = ", this.player.movement.xDelta);
             this.player.ball.body.setVelocity(this.player.ball.body.velocity.x + this.player.movement.xDelta, this.player.ball.body.velocity.y);
             this.player.movement.xDelta = 0;
         });
@@ -90,18 +101,18 @@ class Level1 extends Phaser.Scene{
         this.input.keyboard.on("keydown-UP", event=>{
             this.player.input.isUp = true;
             if(this.player.input.isDown){
-                console.log("Down triggered while Up already held, cancelling movement.");
+                // console.log("Down triggered while Up already held, cancelling movement.");
                 this.player.movement.yDelta = 0;
             }
             else if(this.player.movement.yDelta > -this.player.movement.maxDelta){
-                console.log("Charge Up");
+                // console.log("Charge Up");
                 this.player.movement.yDelta-=this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-UP", event=>{
             this.player.input.isUp = false;
             this.player.movement.yDelta -= this.player.movement.minDelta;
-            console.log("Release Up, yDelta = ", this.player.movement.yDelta);
+            // console.log("Release Up, yDelta = ", this.player.movement.yDelta);
             this.player.ball.body.setVelocity(this.player.ball.body.velocity.x, this.player.ball.body.velocity.y+this.player.movement.yDelta);
             this.player.movement.yDelta=0;
         });
@@ -110,18 +121,18 @@ class Level1 extends Phaser.Scene{
         this.input.keyboard.on("keydown-DOWN", event=>{
             this.player.input.isDown = true;
             if(this.player.input.isUp){
-                console.log("Up triggered while Down already held, cancelling buffer movement.");
+                // console.log("Up triggered while Down already held, cancelling buffer movement.");
                 this.player.movement.yDelta = 0;
             }
             else if(this.player.movement.yDelta < this.player.movement.maxDelta){
-                console.log("Charge Down");
+                // console.log("Charge Down");
                 this.player.movement.yDelta+=this.player.movement.moveDelta;
             }
         });
         this.input.keyboard.on("keyup-DOWN", event=>{
             this.player.input.isDown = false;
             this.player.movement.yDelta += this.player.movement.minDelta;
-            console.log("Release Down, yDelta = ", this.player.movement.yDelta);
+            // console.log("Release Down, yDelta = ", this.player.movement.yDelta);
             this.player.ball.body.setVelocity(this.player.ball.body.velocity.x, this.player.ball.body.velocity.y+this.player.movement.yDelta);
             this.player.movement.yDelta=0;
         });
@@ -143,28 +154,47 @@ class Level1 extends Phaser.Scene{
         // this.physics.add.collider(this.player.ball, this.goal);
         
 
-        let spacebarDown = 0;
-        let spacebarUp = 0;
+        // TESTING
+        var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // KEYBOARD SPACEBAR CHECK
         this.input.keyboard.on("keydown-SPACE", event=>{
-            spacebarDown += 1;
+            // this.player.inGoal = true;
+            // console.log("inGoal", this.player.inGoal);
+            // if(this.player.inGoal == true){
+            //     console.log("yipee!!!!!");
+            // }
+            // else{
+            //     console.log("send help");
+            // }
         });
-        this.input.keyboard.on("keyup-SPACE", event=>{
-            spacebarUp += 1;
-        });
+        // this.input.keyboard.on("keyup-SPACE", event=>{
+        // });
 
         // getting errors trying to put this into the listeners directly, so i'll just pass it into a variable
         let temp2 = this.goal;
         let temp1 = this.player.ball;
 
-        this.physics.world.on("collide", (temp1, temp2)=>{
-            console.log("help");
-        })
-        this.physics.world.on("overlap",(temp1, temp2)=>{
-            console.log("fard");
+        this.physics.add.overlap(this.goal, this.player.ball, function (){
+            if(spacebar.isDown && spacebar.getDuration() < 300){
+                console.log("pee: ", spacebar.getDuration());
+            }
+            // Level1.player.inGoal = true;
         });
+        // this.physics.world.on("collide", (temp1, temp2)=>{
+        // })
+        // this.physics.world.on("overlap",(temp1, temp2)=>{
+            // this.input.keyboard.on("keyup-SPACE", event=>{
+                // this.testFunc();
+            // });
+            // this.player.inGoal = true;
+        // });
 
 
     }
     update(){
+        // var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // console.log("player.inGoal: ", this.player.inGoal);
+        // this.player.inGoal = false;
+        // console.log("spacebar duration = ", spacebar.getDuration());
     }
 }
