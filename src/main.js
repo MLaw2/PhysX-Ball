@@ -13,7 +13,7 @@ let config = {
     },
     backgroundColor: 0xA0B0B6,
     // scene: [Menu, Select, Summary, Level1, Level2, Level3, Level4, Level5]
-    scene: LevelTemplate,
+    scene: [testscene, Summary],
     title: "PhysX Ball",
 }
 
