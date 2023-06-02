@@ -1,12 +1,12 @@
 var what = false;
-class Level1 extends Phaser.Scene{
+class LevelTemplate extends Phaser.Scene{
 
     player;
     goal;
     thing = new Player();
 
     constructor(){
-        super("Level1");
+        super("LevelTemplate");
     }
     testFunc(){
         console.log("transition to new scene");
@@ -152,23 +152,9 @@ class Level1 extends Phaser.Scene{
         // adding overlap check with ball and goal
         this.physics.add.overlap(this.player.ball, this.goal);
         // this.physics.add.collider(this.player.ball, this.goal);
-        
 
-        // TESTING
+        // spacebar variable for checking spacebar input
         var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        // KEYBOARD SPACEBAR CHECK
-        this.input.keyboard.on("keydown-SPACE", event=>{
-            // this.player.inGoal = true;
-            // console.log("inGoal", this.player.inGoal);
-            // if(this.player.inGoal == true){
-            //     console.log("yipee!!!!!");
-            // }
-            // else{
-            //     console.log("send help");
-            // }
-        });
-        // this.input.keyboard.on("keyup-SPACE", event=>{
-        // });
 
         // getting errors trying to put this into the listeners directly, so i'll just pass it into a variable
         let temp2 = this.goal;
@@ -176,25 +162,10 @@ class Level1 extends Phaser.Scene{
 
         this.physics.add.overlap(this.goal, this.player.ball, function (){
             if(spacebar.isDown && spacebar.getDuration() < 300){
-                console.log("pee: ", spacebar.getDuration());
+                this.testFunc();
             }
-            // Level1.player.inGoal = true;
         });
-        // this.physics.world.on("collide", (temp1, temp2)=>{
-        // })
-        // this.physics.world.on("overlap",(temp1, temp2)=>{
-            // this.input.keyboard.on("keyup-SPACE", event=>{
-                // this.testFunc();
-            // });
-            // this.player.inGoal = true;
-        // });
-
-
     }
     update(){
-        // var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        // console.log("player.inGoal: ", this.player.inGoal);
-        // this.player.inGoal = false;
-        // console.log("spacebar duration = ", spacebar.getDuration());
     }
 }
