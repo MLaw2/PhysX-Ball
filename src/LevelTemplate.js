@@ -49,6 +49,8 @@ class LevelTemplate extends Phaser.Scene{
         .setBounce(1)
         .setDamping(true)
         .setDrag(0.5);
+        player.ball.body.onCollide = true;
+        player.ball.body.onWorldBounds = true;
 
         return player;
     }
@@ -63,6 +65,16 @@ class LevelTemplate extends Phaser.Scene{
         return tracker;
     }
     setupMovement(player, stats){
+        // setup collision tracking for world bounds
+        this.physics.world.on("worldbounds", (player)=>{
+            console.log("plus one to bounce");
+            stats.bounces += 1;
+        })
+        // setup collision tracking body to body collision
+        this.physics.world.on("collide", (player)=>{
+            console.log("plus one to bounce from body collide");
+            stats.bounces+=1;
+        })
         // key right movement
         this.input.keyboard.on("keydown-RIGHT", event=>{
             player.input.isRight = true;
@@ -79,7 +91,9 @@ class LevelTemplate extends Phaser.Scene{
             player.input.isRight = false;
             player.movement.xDelta += player.movement.minDelta;
             // console.log("Release Right, xDelta = ", this.player.movement.xDelta);
-            // if(player.movement.xDelta !=)
+            if(player.movement.xDelta > 0){
+                stats.moves+=1;
+            }
             player.ball.body.setVelocity(player.ball.body.velocity.x + player.movement.xDelta, player.ball.body.velocity.y);
             player.movement.xDelta = 0;
         });
@@ -100,6 +114,9 @@ class LevelTemplate extends Phaser.Scene{
             player.input.isLeft = false;
             player.movement.xDelta -= player.movement.minDelta;
             // console.log("Release Left, xDelta = ", this.player.movement.xDelta);
+            if(player.movement.xDelta < 0){
+                stats.moves+=1;
+            }
             player.ball.body.setVelocity(player.ball.body.velocity.x + player.movement.xDelta, player.ball.body.velocity.y);
             player.movement.xDelta = 0;
         });
@@ -120,6 +137,9 @@ class LevelTemplate extends Phaser.Scene{
             player.input.isUp = false;
             player.movement.yDelta -= player.movement.minDelta;
             // console.log("Release Up, yDelta = ", this.player.movement.yDelta);
+            if(player.movement.yDelta < 0){
+                stats.moves+=1;
+            }
             player.ball.body.setVelocity(player.ball.body.velocity.x, player.ball.body.velocity.y+player.movement.yDelta);
             player.movement.yDelta=0;
         });
@@ -140,13 +160,22 @@ class LevelTemplate extends Phaser.Scene{
             player.input.isDown = false;
             player.movement.yDelta += player.movement.minDelta;
             // console.log("Release Down, yDelta = ", this.player.movement.yDelta);
+            if(player.movement.yDelta > 0){
+                stats.moves+=1;
+            }
             player.ball.body.setVelocity(player.ball.body.velocity.x, player.ball.body.velocity.y+player.movement.yDelta);
             player.movement.yDelta=0;
         });
     }
-    setupWin(player, goal, level, startTime, record){
+    setupWin(player, goal, level, record){
         // spacebar variable for checking spacebar input
         var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        // recording # of spacebar inputs
+        // and yes, holding the spacebar down counts as multiple (to encourage accurate presses)
+        this.input.keyboard.on("keydown-SPACE", event=>{
+            record.missed+=1;
+        })
 
         // getting errors trying to put this into the listeners directly, so i'll just pass it into a variable
         let temp = player.ball;
@@ -156,20 +185,11 @@ class LevelTemplate extends Phaser.Scene{
                 // record.time = this.time.now - startTime;
                 console.log("transition to new scene");
                 console.log(spacebar.getDuration());
+                console.log("time on finish: ",this.time.now);
+                record.time = this.time.now;
                 this.scene.start("Summary", {level: level, stats: record});
             }
         })
-    }
-    transition(level, record){
-    }
-    preload(){
-        this.load.image("ball", "./assets/ball.jpg");
-    }
-    create(){
-
-
-    }
-    update(){
     }
 }
 
@@ -183,15 +203,9 @@ class testscene extends LevelTemplate{
         this.player = this.makePlayer(100, 100, 20);
         this.goal = this.makeGoal(600, 600, 10, this.player);
         this.tracker = this.makeStats();
-        // this.tStart = this.time.now;
-        this.tStart = 1;
 
         this.setupMovement(this.player, this.tracker);
-        this.setupWin(this.player, this.goal, 1, this.tStart, this.tracker);
-        this.tracker.time = 1;
-        this.tracker.moves = 2;
-        this.tracker.bounces = 3;
-        this.tracker.missed = 4;
+        this.setupWin(this.player, this.goal, 0, this.tracker);
 
         // test level
         let wall1 = this.add.rectangle(500, 500, 100, 100, 0xffffff);
