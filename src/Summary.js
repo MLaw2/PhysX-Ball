@@ -37,7 +37,7 @@ class Summary extends Phaser.Scene{
                         this.scene.start("Level4");
                         break;
                     case 4:
-                        this.scene.start("Level5");
+                        this.scene.start("Victory");
                         break;
                     default:
                         console.log("ooops summary scene broke");

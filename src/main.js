@@ -9,10 +9,10 @@ let config = {
     physics:{
         default: "arcade",
         gravity: 0,
-        arcade: {debug: true},
+        arcade: {debug: false},
     },
     backgroundColor: 0xA0B0B6,
-    scene: [Menu, Tutorial, Summary, Level1],
+    scene: [Victory, Menu, Tutorial, Summary, Level1, Level2, Level3, Level4],
     title: "PhysX Ball",
 }
 
