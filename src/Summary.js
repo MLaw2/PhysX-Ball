@@ -5,16 +5,20 @@ class Summary extends Phaser.Scene{
     init(data){
         this.prevlvl = data.level;
         console.log("time now: ", this.time.now);
-        this.time = data.stats.time;
+        this.time = data.stats.time / 1000;
         this.moves = data.stats.moves;
         this.bounces = data.stats.bounces;
-        this.accuracy = data.stats.missed;
+        this.accuracy = data.stats.missed - 1;
     }
     create(){
-        this.add.text(100, 100, "Goal!");
-        this.add.text(100, 200, "trying")
-        this.add.text(100, 300, "Press Right Arrow to Continue...");
-        this.add.text(100, 400, "Press Left Arrow to go back to Menu...");
+        this.x = this.cameras.main.worldView.x + this.cameras.main.width;
+        this.y = this.cameras.main.worldView.y + this.cameras.main.height;
+        let edge = this.x*0.13;
+        this.add.text(edge,this.y*0.13, "Goal!", {fontFamily: "Tahoma",color: '#000000',fontSize: 80,});
+        this.add.text(edge,this.y*0.75, "Press Right Arrow to Continue...\nPress Left Arrow to go back to Menu...", {fontFamily: "Tahoma",color: '#000000',fontSize: 24,});
+        let statString = "Time: " + this.time+"\nMoves: "+this.moves+"\nBounces: "+this.bounces+"\nMisses: "+this.accuracy;
+        this.add.text(edge,this.y*0.4, statString, {fontFamily: "Tahoma",color: '#000000',fontSize: 24,});
+        // this.add.text(edge,this.y*0.4, this.time , {fontFamily: "Tahoma",color: '#000000',fontSize: 24,});
         // console.log(this.prevlvl,", ", this.time,", ",  this.moves,", ",  this.bounces,", ",  this.accuracy);
         // can't figure out why I can't use a delayed call, oh well...
         // Phaser.Time.Clock.delayedCall(100, ()=>{
@@ -39,7 +43,8 @@ class Summary extends Phaser.Scene{
                         console.log("ooops summary scene broke");
                 };
             });
-            // this.input.keyboard.on("keydown-LEFT", ())
-        // });
+            this.input.keyboard.on("keydown-LEFT", ()=>{
+                this.scene.start("Menu");
+            });
     }
 }

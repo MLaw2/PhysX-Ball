@@ -12,8 +12,7 @@ let config = {
         arcade: {debug: true},
     },
     backgroundColor: 0xA0B0B6,
-    // scene: [Menu, Select, Summary, Level1, Level2, Level3, Level4, Level5]
-    scene: [testscene, Summary, Level1],
+    scene: [Menu, Tutorial, Summary, Level1],
     title: "PhysX Ball",
 }
 

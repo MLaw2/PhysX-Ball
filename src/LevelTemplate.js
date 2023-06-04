@@ -6,6 +6,10 @@ class LevelTemplate extends Phaser.Scene{
     constructor(key){
         super(key);
     }
+    init(){
+        this.x = this.cameras.main.worldView.x + this.cameras.main.width;
+        this.y = this.cameras.main.worldView.y + this.cameras.main.height;
+    }
     makeGoal(x, y, size, player){
         // setting up goal
         let goal = this.add.circle(x, y, size, 0x39FF14)
@@ -59,7 +63,7 @@ class LevelTemplate extends Phaser.Scene{
             time: 0,
             moves: 0,
             bounces: 0,
-            missed: 0,
+            missed: 0,  // missed is a misnomer but oh well
         }
         return tracker;
     }
