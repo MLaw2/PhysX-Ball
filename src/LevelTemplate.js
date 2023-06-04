@@ -70,12 +70,10 @@ class LevelTemplate extends Phaser.Scene{
     setupMovement(player, stats){
         // setup collision tracking for world bounds
         this.physics.world.on("worldbounds", (player)=>{
-            console.log("plus one to bounce");
             stats.bounces += 1;
         })
         // setup collision tracking body to body collision
         this.physics.world.on("collide", (player)=>{
-            console.log("plus one to bounce from body collide");
             stats.bounces+=1;
         })
         // key right movement
@@ -185,10 +183,6 @@ class LevelTemplate extends Phaser.Scene{
 
         this.physics.world.on('overlap', (temp, goal)=>{
             if(spacebar.isDown && spacebar.getDuration() <= 400){
-                // record.time = this.time.now - startTime;
-                console.log("transition to new scene");
-                console.log(spacebar.getDuration());
-                console.log("time on finish: ",this.time.now);
                 record.time = this.time.now;
                 this.scene.start("Summary", {level: level, stats: record});
             }

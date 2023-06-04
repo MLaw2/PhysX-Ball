@@ -18,10 +18,7 @@ class Summary extends Phaser.Scene{
         this.add.text(edge,this.y*0.75, "Press Right Arrow to Continue...\nPress Left Arrow to go back to Menu...", {fontFamily: "Tahoma",color: '#000000',fontSize: 24,});
         let statString = "Time: " + this.time+"\nMoves: "+this.moves+"\nBounces: "+this.bounces+"\nMisses: "+this.accuracy;
         this.add.text(edge,this.y*0.4, statString, {fontFamily: "Tahoma",color: '#000000',fontSize: 24,});
-        // this.add.text(edge,this.y*0.4, this.time , {fontFamily: "Tahoma",color: '#000000',fontSize: 24,});
-        // console.log(this.prevlvl,", ", this.time,", ",  this.moves,", ",  this.bounces,", ",  this.accuracy);
         // can't figure out why I can't use a delayed call, oh well...
-        // Phaser.Time.Clock.delayedCall(100, ()=>{
             this.input.keyboard.on("keydown-RIGHT", ()=>{
                 switch(this.prevlvl){
                     case 0:
