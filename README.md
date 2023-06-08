@@ -21,3 +21,6 @@ It also intializes the statistics tracking, which is displayed after a level com
 
 # Assets
 I did not use any custom assets, everything was made with primitive shapes.
+
+# Notes
+There is a bug where the timer continues counting past each level
